@@ -101,6 +101,15 @@ typedef struct __blake2b_state
     uint8_t  last_node;
   } blake2b_state;
 
+/* prevents compiler optimizing out memset() */
+static inline void secure_zero_memory(void *v, size_t n)
+{
+	volatile uint8_t *p = ( volatile uint8_t * )v;
+
+	while( n-- ) *p++ = 0;
+}
+
+
 // Streaming API
 BLAKE2_API int blake2b_init( blake2b_state *S, size_t outlen );
 BLAKE2_API int blake2b_init_key( blake2b_state *S, size_t outlen, const void *key, size_t keylen );

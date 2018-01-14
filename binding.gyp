@@ -35,7 +35,7 @@
                 "Lyra2.c",
                 "Sponge.c",
                 "Lyra2REV2.c",
-		        "Lyra2Z.c",
+		            "Lyra2Z.c",
                 "blake2s.c",
                 "sha3/sph_blake2s.c",
                 "neoscrypt.c",

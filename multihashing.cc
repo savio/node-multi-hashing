@@ -600,11 +600,11 @@ NAN_METHOD(blake2b) {
         return THROW_ERROR_EXCEPTION("Argument should be a buffer object.");
 
     char * input = Buffer::Data(target);
-    char *output = (char*) malloc(sizeof(char) * 32);
+    char *output = (char*) malloc(sizeof(char) * 64);
 
     blake2b_hash(input, output);
 
-    info.GetReturnValue().Set(Nan::NewBuffer(output, 32).ToLocalChecked());
+    info.GetReturnValue().Set(Nan::NewBuffer(output, 64).ToLocalChecked());
 }
 
 NAN_METHOD(blake2s) {

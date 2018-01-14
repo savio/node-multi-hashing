@@ -28,6 +28,7 @@ extern "C" {
     // news algos added by nosekefik
     #include "phi1612.h"
     #include "tribus.h"
+    #include "blake2b.h"
     #include "blake2s.h"
     #include "gost.h"
     #include "Lyra2RE.h"
@@ -589,6 +590,23 @@ NAN_METHOD(tribus) {
     info.GetReturnValue().Set(Nan::NewBuffer(output, 32).ToLocalChecked());
 
 }
+NAN_METHOD(blake2b) {
+    if (info.Length() < 1)
+    return THROW_ERROR_EXCEPTION("You must provide one argument.");
+    
+    Local<Object> target = Nan::To<Object>(info[0]).ToLocalChecked();
+    
+    if(!Buffer::HasInstance(target))
+        return THROW_ERROR_EXCEPTION("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char *output = (char*) malloc(sizeof(char) * 32);
+
+    blake2b_hash(input, output);
+
+    info.GetReturnValue().Set(Nan::NewBuffer(output, 32).ToLocalChecked());
+}
+
 NAN_METHOD(blake2s) {
     if (info.Length() < 1)
     return THROW_ERROR_EXCEPTION("You must provide one argument.");
@@ -866,6 +884,7 @@ NAN_MODULE_INIT(init) {
  // new algos added by nosekefik
     Nan::Set(target, Nan::New("phi1612").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(phi1612)).ToLocalChecked());    
     Nan::Set(target, Nan::New("tribus").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(tribus)).ToLocalChecked());
+    Nan::Set(target, Nan::New("blake2b").ToLocalChecked(),Nan::GetFunction(Nan::New<v8::FunctionTemplate>(blake2b)).ToLocalChecked());
     Nan::Set(target, Nan::New("blake2s").ToLocalChecked(),Nan::GetFunction(Nan::New<v8::FunctionTemplate>(blake2s)).ToLocalChecked());
     Nan::Set(target, Nan::New("gost").ToLocalChecked(),Nan::GetFunction(Nan::New<v8::FunctionTemplate>(gost)).ToLocalChecked());
     Nan::Set(target, Nan::New("lyra2re").ToLocalChecked(),Nan::GetFunction(Nan::New<v8::FunctionTemplate>(lyra2re)).ToLocalChecked());

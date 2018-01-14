@@ -3,6 +3,7 @@
         {
             "target_name": "multihashing",
             "sources": [
+                "blake2b.c",
                 "sha3/blake2b.c",
                 "sha3/sph_haval.c",
                 "sha3/sph_ripemd.c",
